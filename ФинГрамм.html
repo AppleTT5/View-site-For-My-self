@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Страхование жизни и здоровья для подростков</title>
+    <title>Страхование жизни и здоровья | Деловая презентация</title>
     <style>
         * {
             margin: 0;
@@ -12,11 +12,12 @@
         }
 
         body {
-            font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
-            background: #f5f7fa;
+            font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+            background: #eef2f5;
             overflow: hidden;
         }
 
+        /* Контейнер слайдов */
         .slide-container {
             width: 100vw;
             height: 100vh;
@@ -24,6 +25,7 @@
             overflow: hidden;
         }
 
+        /* Отдельный слайд */
         .slide {
             width: 100%;
             height: 100%;
@@ -34,7 +36,7 @@
             transition: opacity 0.4s ease-in-out;
             background: #ffffff;
             overflow-y: auto;
-            padding: 40px 60px;
+            padding: 50px 70px;
         }
 
         .slide.active {
@@ -48,28 +50,30 @@
             margin: 0 auto;
         }
 
+        /* Типографика */
         h1 {
-            font-size: 42px;
-            color: #1a3a5c;
-            margin-bottom: 20px;
+            font-size: 48px;
             font-weight: 600;
-            letter-spacing: -0.5px;
+            color: #1a3a5c;
+            letter-spacing: -0.02em;
+            margin-bottom: 20px;
+            line-height: 1.2;
         }
 
         h2 {
             font-size: 32px;
+            font-weight: 500;
             color: #1a3a5c;
             margin-bottom: 30px;
-            font-weight: 500;
             border-left: 4px solid #2c7da0;
             padding-left: 20px;
         }
 
         h3 {
             font-size: 22px;
-            color: #2c3e50;
-            margin: 20px 0 12px 0;
             font-weight: 500;
+            color: #2c7da0;
+            margin-bottom: 15px;
         }
 
         p {
@@ -79,6 +83,7 @@
             margin-bottom: 16px;
         }
 
+        /* Списки */
         ul, ol {
             margin-left: 25px;
             margin-bottom: 20px;
@@ -88,60 +93,69 @@
             font-size: 18px;
             line-height: 1.5;
             color: #2c3e50;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
         }
 
+        /* Информационные блоки (без иконок) */
         .info-box {
-            background: #f0f4f8;
-            padding: 20px 25px;
-            border-radius: 8px;
+            background: #f5f8fa;
             border-left: 4px solid #2c7da0;
-            margin: 20px 0;
+            padding: 20px 25px;
+            margin: 25px 0;
+            border-radius: 0 8px 8px 0;
         }
 
+        /* Сетки */
         .grid-2 {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 25px;
+            gap: 30px;
             margin: 25px 0;
         }
 
         .grid-3 {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
+            gap: 25px;
             margin: 25px 0;
         }
 
+        /* Карточки (без картинок) */
         .card {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
+            background: #ffffff;
+            border: 1px solid #e0e8f0;
             border-radius: 8px;
             padding: 20px;
             transition: box-shadow 0.2s;
         }
 
         .card:hover {
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            box-shadow: 0 6px 14px rgba(0,0,0,0.05);
         }
 
-        .card-image {
-            width: 100%;
-            height: 160px;
-            object-fit: cover;
-            border-radius: 6px;
+        /* Геометрический акцент вместо картинок */
+        .accent-circle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #2c7da0;
             margin-bottom: 15px;
-            background: #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
         }
 
-        .stat-number {
-            font-size: 36px;
-            font-weight: 700;
-            color: #2c7da0;
-            display: block;
-            margin-bottom: 8px;
+        .accent-line {
+            width: 50px;
+            height: 3px;
+            background: #2c7da0;
+            margin: 15px 0;
         }
 
+        /* Таблицы */
         table {
             width: 100%;
             border-collapse: collapse;
@@ -150,28 +164,36 @@
         }
 
         th, td {
-            border: 1px solid #cbd5e1;
+            border: 1px solid #d0dce8;
             padding: 12px 15px;
             text-align: left;
             vertical-align: top;
         }
 
         th {
-            background: #f1f5f9;
+            background: #f0f4f8;
             font-weight: 600;
-            color: #1e293b;
+            color: #1a3a5c;
         }
 
-        .badge {
-            display: inline-block;
-            background: #e2e8f0;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 14px;
-            color: #1e293b;
-            margin-right: 8px;
+        /* Статистические цифры */
+        .stat-number {
+            font-size: 42px;
+            font-weight: 700;
+            color: #2c7da0;
+            display: block;
+            margin-bottom: 8px;
+            line-height: 1;
         }
 
+        /* Разделитель */
+        hr {
+            margin: 25px 0;
+            border: none;
+            border-top: 1px solid #e0e8f0;
+        }
+
+        /* Навигация */
         .navigation {
             position: fixed;
             bottom: 25px;
@@ -182,14 +204,14 @@
         }
 
         button {
-            padding: 10px 20px;
-            font-size: 16px;
+            padding: 10px 22px;
+            font-size: 15px;
             font-weight: 500;
             background: white;
-            border: 1px solid #cbd5e1;
+            border: 1px solid #cbdbe0;
             border-radius: 6px;
             cursor: pointer;
-            color: #1e293b;
+            color: #1a3a5c;
             transition: all 0.2s;
         }
 
@@ -203,48 +225,19 @@
             position: fixed;
             bottom: 25px;
             left: 25px;
-            background: rgba(0,0,0,0.6);
+            background: rgba(0,0,0,0.55);
             color: white;
             padding: 5px 14px;
             border-radius: 20px;
             font-size: 13px;
-            z-index: 100;
             font-weight: 400;
-        }
-
-        .image-row {
-            display: flex;
-            gap: 15px;
-            margin: 20px 0;
-            flex-wrap: wrap;
-        }
-
-        .image-caption {
-            flex: 1;
-            text-align: center;
-            font-size: 14px;
-            color: #64748b;
-        }
-
-        .image-caption img {
-            width: 100%;
-            max-height: 180px;
-            object-fit: cover;
-            border-radius: 8px;
-            margin-bottom: 8px;
-            border: 1px solid #e2e8f0;
-        }
-
-        hr {
-            margin: 25px 0;
-            border: none;
-            border-top: 1px solid #e2e8f0;
+            z-index: 100;
         }
 
         @media (max-width: 768px) {
-            .slide { padding: 20px; }
-            h1 { font-size: 28px; }
-            h2 { font-size: 22px; }
+            .slide { padding: 25px; }
+            h1 { font-size: 32px; }
+            h2 { font-size: 24px; }
             p, li { font-size: 15px; }
             .grid-2, .grid-3 { grid-template-columns: 1fr; }
         }
@@ -252,77 +245,75 @@
 </head>
 <body>
     <div class="slide-container">
-        
-        <!-- Слайд 1: Титульный -->
+
+        <!-- СЛАЙД 1: ТИТУЛЬНЫЙ -->
         <div class="slide active" id="slide0">
             <div class="slide-content">
-                <div style="text-align: center; margin-top: 60px;">
-                    <img src="https://picsum.photos/id/20/800/300" alt="Школьник на фоне школы" style="width: 100%; max-width: 700px; border-radius: 12px; margin-bottom: 30px; border: 1px solid #e2e8f0;">
-                    <h1 style="font-size: 48px;">Страхование жизни и здоровья</h1>
-                    <p style="font-size: 24px; color: #475569; margin-bottom: 30px;">Зачем оно нужно подростку?</p>
-                    <hr style="width: 80px; margin: 20px auto; border-top: 2px solid #2c7da0;">
-                    <p style="font-size: 16px; color: #64748b;">Презентация по финансовой грамотности</p>
-                    <p style="font-size: 14px; color: #94a3b8; margin-top: 40px;">← → или клавиши влево/вправо</p>
+                <div style="margin-top: 80px;">
+                    <div class="accent-line" style="width: 80px; margin-bottom: 25px;"></div>
+                    <h1 style="font-size: 52px;">Страхование жизни и здоровья</h1>
+                    <p style="font-size: 24px; color: #4a627a; margin-bottom: 30px;">Зачем оно нужно подростку?</p>
+                    <div class="accent-line" style="width: 50px; margin: 25px 0;"></div>
+                    <p style="font-size: 16px; color: #6b85a0;">Презентация по финансовой грамотности</p>
+                    <p style="font-size: 14px; color: #9aacc0; margin-top: 50px;">← → или клавиши влево/вправо</p>
                 </div>
             </div>
         </div>
 
-        <!-- Слайд 2: Что такое страхование -->
+        <!-- СЛАЙД 2: ЧТО ТАКОЕ СТРАХОВАНИЕ -->
         <div class="slide" id="slide1">
             <div class="slide-content">
                 <h2>Понятие страхования</h2>
                 <div class="info-box">
-                    <p style="font-size: 20px;"><strong>Страхование</strong> — это механизм защиты от финансовых потерь, возникающих в результате непредвиденных событий.</p>
+                    <p style="font-size: 20px;"><strong>Страхование</strong> — механизм защиты от финансовых потерь, возникающих в результате непредвиденных событий.</p>
                 </div>
                 <div class="grid-3">
                     <div class="card">
-                        <img src="https://picsum.photos/id/1/400/200" alt="Деньги" class="card-image">
+                        <div class="accent-circle">1</div>
                         <h3>Страховая премия</h3>
-                        <p>Регулярный платёж, который вносит страхователь (обычно 1000-2000 руб./год).</p>
+                        <p>Регулярный платёж страхователя. Обычно: <strong>1 000–2 000 руб./год</strong>.</p>
                     </div>
                     <div class="card">
-                        <img src="https://picsum.photos/id/48/400/200" alt="Травма" class="card-image">
+                        <div class="accent-circle">2</div>
                         <h3>Страховой случай</h3>
                         <p>Событие, предусмотренное договором (травма, несчастный случай).</p>
                     </div>
                     <div class="card">
-                        <img src="https://picsum.photos/id/42/400/200" alt="Выплата" class="card-image">
+                        <div class="accent-circle">3</div>
                         <h3>Страховая выплата</h3>
-                        <p>Сумма, которую страховая компания перечисляет застрахованному.</p>
+                        <p>Сумма, перечисляемая застрахованному лицу при наступлении случая.</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Слайд 3: Актуальность для подростков -->
+        <!-- СЛАЙД 3: АКТУАЛЬНОСТЬ ДЛЯ ПОДРОСТКОВ -->
         <div class="slide" id="slide2">
             <div class="slide-content">
-                <h2>Актуальность для подростков</h2>
+                <h2>Актуальность для несовершеннолетних</h2>
                 <div class="grid-2">
                     <div class="card">
-                        <img src="https://picsum.photos/id/20/400/250" alt="Активный подросток" class="card-image">
                         <h3>Высокая активность</h3>
                         <p>Подростки много двигаются, занимаются спортом, участвуют в подвижных играх — риск травм повышен.</p>
                     </div>
                     <div class="card">
-                        <img src="https://picsum.photos/id/26/400/250" alt="Подросток один" class="card-image">
                         <h3>Самостоятельность</h3>
                         <p>Школьники часто находятся без родителей, не всегда имея доступ к средствам на лечение.</p>
                     </div>
                 </div>
                 <div class="info-box">
-                    <p><span class="stat-number">до 20%</span> застрахованных детей хотя бы раз обращались за выплатой по травме (по данным страховых компаний).</p>
+                    <span class="stat-number">до 20%</span>
+                    <p>застрахованных несовершеннолетних хотя бы раз обращались за выплатой по травме.</p>
                 </div>
             </div>
         </div>
 
-        <!-- Слайд 4: Какие риски покрывает -->
+        <!-- СЛАЙД 4: СТРАХОВЫЕ РИСКИ -->
         <div class="slide" id="slide3">
             <div class="slide-content">
                 <h2>Страховые риски</h2>
                 <div class="grid-2">
                     <div class="card">
-                        <img src="https://picsum.photos/id/29/400/200" alt="Перелом" class="card-image">
                         <h3>Что покрывается</h3>
                         <ul>
                             <li>Переломы, вывихи, сотрясения</li>
@@ -330,10 +321,9 @@
                             <li>Инвалидность от несчастного случая</li>
                             <li>Экстренная госпитализация</li>
                         </ul>
-                        <p><span class="badge">100+ видов травм</span></p>
+                        <div style="margin-top: 15px;"><span style="background: #e8f0f8; padding: 4px 12px; border-radius: 20px; font-size: 14px;">100+ видов травм</span></div>
                     </div>
                     <div class="card">
-                        <img src="https://picsum.photos/id/16/400/200" alt="Запрет" class="card-image">
                         <h3>Что не покрывается</h3>
                         <ul>
                             <li>Умышленное причинение вреда себе</li>
@@ -345,11 +335,10 @@
             </div>
         </div>
 
-        <!-- Слайд 5: Стоимость -->
+        <!-- СЛАЙД 5: СТОИМОСТЬ (ТАБЛИЦА) -->
         <div class="slide" id="slide4">
             <div class="slide-content">
                 <h2>Стоимость страхования</h2>
-                <img src="https://picsum.photos/id/0/900/200" alt="Деньги и расчёты" style="width: 100%; border-radius: 8px; margin-bottom: 20px;">
                 <table>
                     <thead>
                         <tr><th>Тип полиса</th><th>Страховая сумма</th><th>Цена в год</th><th>Выплата при переломе руки</th></tr>
@@ -366,60 +355,59 @@
             </div>
         </div>
 
-        <!-- Слайд 6: Примеры из практики -->
+        <!-- СЛАЙД 6: ПРИМЕРЫ ИЗ ПРАКТИКИ (БЕЗ КАРТИНОК) -->
         <div class="slide" id="slide5">
             <div class="slide-content">
                 <h2>Примеры из практики</h2>
                 <div class="grid-2">
                     <div class="card">
-                        <img src="https://picsum.photos/id/81/400/200" alt="Больница" class="card-image">
                         <h3>Без страховки</h3>
+                        <div class="accent-line"></div>
                         <p><strong>Ситуация:</strong> Подросток получил перелом ноги во время катания на велосипеде.</p>
                         <p><strong>Результат:</strong> Семья оплатила лечение самостоятельно — расходы превысили 80 000 рублей.</p>
                     </div>
                     <div class="card">
-                        <img src="https://picsum.photos/id/91/400/200" alt="Страховой полис" class="card-image">
                         <h3>Со страховкой</h3>
+                        <div class="accent-line"></div>
                         <p><strong>Ситуация:</strong> Аналогичная травма у застрахованного подростка.</p>
-                        <p><strong>Результат:</strong> Страховая компания возместила расходы на лечение в полном объёме согласно договору.</p>
+                        <p><strong>Результат:</strong> Страховая компания возместила расходы на лечение в полном объёме.</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Слайд 7: Виды страхования -->
+        <!-- СЛАЙД 7: ВИДЫ СТРАХОВАНИЯ -->
         <div class="slide" id="slide6">
             <div class="slide-content">
                 <h2>Виды страхования для несовершеннолетних</h2>
                 <div class="grid-3">
                     <div class="card">
-                        <img src="https://picsum.photos/id/28/400/150" alt="Спорт" class="card-image">
                         <h3>От несчастного случая</h3>
-                        <p>Самый распространённый вид. Покрывает травмы и их последствия. Цена: от 1 000 руб./год.</p>
+                        <p>Самый распространённый вид. Покрывает травмы и их последствия.</p>
+                        <p><strong>Цена:</strong> от 1 000 руб./год</p>
                     </div>
                     <div class="card">
-                        <img src="https://picsum.photos/id/107/400/150" alt="Врач" class="card-image">
-                        <h3>ДМС (добровольное медицинское)</h3>
-                        <p>Включает лечение болезней, вызов врача на дом, прививки. Цена: от 20 000 руб./год.</p>
+                        <h3>ДМС</h3>
+                        <p>Включает лечение болезней, вызов врача на дом, прививки.</p>
+                        <p><strong>Цена:</strong> от 20 000 руб./год</p>
                     </div>
                     <div class="card">
-                        <img src="https://picsum.photos/id/20/400/150" alt="Копилка" class="card-image">
                         <h3>Накопительное страхование жизни</h3>
-                        <p>Совмещает накопление средств и страховую защиту. Выплата при травме + накопления к совершеннолетию.</p>
+                        <p>Совмещает накопление средств и страховую защиту. Выплата при травме + накопления.</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Слайд 8: Термины -->
+        <!-- СЛАЙД 8: ТЕРМИНЫ -->
         <div class="slide" id="slide7">
             <div class="slide-content">
                 <h2>Основные термины страхования</h2>
                 <div class="grid-2">
-                    <div class="card"><strong>Страховщик</strong><br>Страховая компания, которая принимает на себя риски и производит выплаты.</div>
-                    <div class="card"><strong>Страхователь</strong><br>Лицо, заключающее договор и уплачивающее страховые взносы (как правило, родители).</div>
-                    <div class="card"><strong>Застрахованный</strong><br>Лицо, жизнь и здоровье которого защищены (в данном случае — подросток).</div>
-                    <div class="card"><strong>Выгодоприобретатель</strong><br>Лицо, получающее страховую выплату (может совпадать с застрахованным).</div>
+                    <div class="card"><strong>Страховщик</strong><br>Страховая компания, принимающая на себя риски.</div>
+                    <div class="card"><strong>Страхователь</strong><br>Лицо, заключающее договор и уплачивающее взносы (родители).</div>
+                    <div class="card"><strong>Застрахованный</strong><br>Лицо, чьи жизнь и здоровье защищены (подросток).</div>
+                    <div class="card"><strong>Выгодоприобретатель</strong><br>Лицо, получающее страховую выплату.</div>
                 </div>
                 <div class="info-box">
                     <p>💡 <strong>Важно:</strong> Договор страхования защищает только будущие риски. Застраховать уже произошедшее событие невозможно.</p>
@@ -427,20 +415,28 @@
             </div>
         </div>
 
-        <!-- Слайд 9: Почему это важно -->
+        <!-- СЛАЙД 9: ЗНАЧЕНИЕ СТРАХОВАНИЯ -->
         <div class="slide" id="slide8">
             <div class="slide-content">
                 <h2>Значение страхования для подростка</h2>
-                <img src="https://picsum.photos/id/99/900/250" alt="Семья обсуждает страховку" style="width: 100%; border-radius: 8px; margin-bottom: 20px;">
                 <div class="grid-3">
-                    <div class="card"><span class="stat-number">1</span><p>Финансовая защита семьи от неожиданных расходов на лечение</p></div>
-                    <div class="card"><span class="stat-number">2</span><p>Доступность — стоимость полиса сопоставима с повседневными расходами</p></div>
-                    <div class="card"><span class="stat-number">3</span><p>Спокойствие родителей и самого подростка в повседневной жизни</p></div>
+                    <div class="card">
+                        <div class="stat-number">1</div>
+                        <p>Финансовая защита семьи от неожиданных расходов на лечение</p>
+                    </div>
+                    <div class="card">
+                        <div class="stat-number">2</div>
+                        <p>Доступность — стоимость полиса сопоставима с повседневными расходами</p>
+                    </div>
+                    <div class="card">
+                        <div class="stat-number">3</div>
+                        <p>Спокойствие родителей и самого подростка в повседневной жизни</p>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Слайд 10: Рекомендации -->
+        <!-- СЛАЙД 10: РЕКОМЕНДАЦИИ -->
         <div class="slide" id="slide9">
             <div class="slide-content">
                 <h2>Практические рекомендации</h2>
@@ -453,25 +449,25 @@
                     </ul>
                 </div>
                 <hr>
-                <p style="text-align: center; color: #64748b;">Обсудите с родителями возможность оформления страхового полиса, если его ещё нет.</p>
+                <p style="text-align: center; color: #4a627a;">Обсудите с родителями возможность оформления страхового полиса, если его ещё нет.</p>
             </div>
         </div>
 
-        <!-- Слайд 11: Заключение -->
+        <!-- СЛАЙД 11: ЗАКЛЮЧЕНИЕ -->
         <div class="slide" id="slide10">
             <div class="slide-content">
-                <div style="text-align: center; margin-top: 60px;">
-                    <img src="https://picsum.photos/id/104/800/300" alt="Ключи от безопасности" style="width: 100%; max-width: 600px; border-radius: 12px; margin-bottom: 30px;">
+                <div style="margin-top: 100px; text-align: center;">
+                    <div class="accent-line" style="margin: 0 auto 25px auto;"></div>
                     <h2 style="border-left: none;">Вывод</h2>
                     <p style="font-size: 20px;">Страхование жизни и здоровья — это инструмент управления рисками, доступный для большинства семей.</p>
                     <hr style="width: 60px; margin: 25px auto;">
-                    <p style="font-size: 16px; color: #475569;">Финансовая грамотность начинается с понимания: лучше предотвратить потери, чем потом их покрывать.</p>
+                    <p style="font-size: 16px; color: #4a627a;">Финансовая грамотность начинается с понимания: лучше предотвратить потери, чем потом их покрывать.</p>
                     <p style="margin-top: 40px; font-size: 18px;"><strong>Спасибо за внимание!</strong></p>
                 </div>
             </div>
         </div>
 
-        <!-- Навигация -->
+        <!-- НАВИГАЦИЯ -->
         <div class="navigation">
             <button onclick="prevSlide()">← Назад</button>
             <button onclick="nextSlide()">Вперёд →</button>
@@ -491,7 +487,7 @@
                     slide.classList.add('active');
                 }
             });
-            document.getElementById('slideNumber').innerText = `Слайд ${currentSlide + 1} / ${totalSlides}`;
+            document.getElementById('slideNumber').innerHTML = `Слайд ${currentSlide + 1} / ${totalSlides}`;
         }
 
         function nextSlide() {
