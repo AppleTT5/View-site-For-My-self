@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Выпускной — варианты</title>
+
+  <style>
+    :root {
+      --bg: #050816;
+      --panel: rgba(255, 255, 255, 0.08);
+      --panel-2: rgba(255, 255, 255, 0.06);
+      --border: rgba(255, 255, 255, 0.12);
+      --text: #f8fafc;
+      --muted: rgba(248, 250, 252, 0.72);
+      --accent: #8b5cf6;
+      --accent-2: #06b6d4;
+      --success: #22c55e;
+      --radius: 24px;
+      --shadow: 0 20px 60px rgba(0, 0, 0, 0.28);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    }
+
+    .bg {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    .bg::before,
+    .bg::after {
+      content: "";
+      position: absolute;
+      width: 520px;
+      height: 520px;
+      border-radius: 50%;
+      filter: blur(90px);
+      opacity: 0.55;
+    }
+
+    .bg::before {
+      background: linear-gradient(135deg, #8b5cf6, #2563eb);
+      top: -160px;
+      left: -120px;
+    }
+
+    .bg::after {
+      background: linear-gradient(135deg, #06b6d4, #8b5cf6);
+      right: -160px;
+      bottom: -180px;
+    }
+
+    .app {
+      width: min(1100px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 70px;
+    }
+
+    .hero {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+      justify-content: space-between;
+      padding: 28px;
+      border: 1px solid var(--border);
+      background:
+        linear-gradient(
+          135deg,
+          rgba(139, 92, 246, 0.16),
+          rgba(6, 182, 212, 0.08)
+        );
+      box-shadow: var(--shadow);
+      border-radius: 32px;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
+    .hero-copy {
+      max-width: 640px;
+    }
+
+    .badge {
+      display: inline-flex;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+      margin: 0 0 12px;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(30px, 5vw, 52px);
+      line-height: 1.03;
+      letter-spacing: -0.04em;
+    }
+
+    .hero p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.5;
+    }
+
+    .toolbar {
+      display: flex;
+      gap: 14px;
+      justify-content: space-between;
+      align-items: center;
+      margin: 24px 0;
+      padding: 14px;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      border-radius: 22px;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
+    .search {
+      flex: 1;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      outline: 0;
+      background: rgba(5, 8, 22, 0.5);
+      color: var(--text);
+      border-radius: 16px;
+      padding: 13px 16px;
+      font: inherit;
+    }
+
+    .search::placeholder {
+      color: rgba(248, 250, 252, 0.42);
+    }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+    }
+
+    .tab {
+      border: 0;
+      cursor: pointer;
+      padding: 12px 14px;
+      border-radius: 16px;
+      background: transparent;
+      color: var(--muted);
+      font: inherit;
+      font-weight: 700;
+      transition: 0.18s;
+    }
+
+    .tab.active {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: white;
+      box-shadow: 0 12px 30px rgba(139, 92, 246, 0.22);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .card {
+      border: 1px solid var(--border);
+      background: var(--panel);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      transition: transform 0.18s ease, border-color 0.18s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(139, 92, 246, 0.45);
+    }
+
+    .card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .emoji {
+      width: 58px;
+      height: 58px;
+      display: grid;
+      place-items: center;
+      font-size: 28px;
+      background: rgba(255, 255, 255, 0.09);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      flex: 0 0 auto;
+    }
+
+    .info {
+      min-width: 0;
+    }
+
+    .card h3 {
+      margin: 0 0 6px;
+      font-size: 22px;
+      line-height: 1.15;
+      word-break: break-word;
+    }
+
+    .date {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .desc {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.55;
+      min-height: 76px;
+      word-break: break-word;
+    }
+
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      margin-top: 18px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .votes {
+      font-weight: 800;
+      color: #c4b5fd;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 16px;
+      padding: 13px 16px;
+      cursor: pointer;
+      font: inherit;
+      font-weight: 800;
+      transition: 0.18s;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: white;
+      box-shadow: 0 12px 30px rgba(139, 92, 246, 0.25);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--muted);
+      border: 1px solid var(--border);
+    }
+
+    .vote-btn {
+      background: rgba(255, 255, 255, 0.09);
+      color: white;
+      border: 1px solid var(--border);
+    }
+
+    .vote-btn:disabled {
+      opacity: 0.75;
+      background: rgba(34, 197, 94, 0.14);
+      border-color: rgba(34, 197, 94, 0.28);
+      color: #86efac;
+      cursor: default;
+      transform: none;
+    }
+
+    .empty {
+      padding: 46px 20px;
+      text-align: center;
+      border: 1px dashed rgba(255, 255, 255, 0.18);
+      border-radius: 28px;
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .empty h3 {
+      margin: 0 0 8px;
+      color: var(--text);
+      font-size: 28px;
+    }
+
+    .empty p {
+      margin: 0 0 18px;
+    }
+
+    .status {
+      grid-column: 1 / -1;
+      padding: 28px;
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px dashed rgba(255, 255, 255, 0.18);
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .status .btn {
+      margin-top: 14px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    dialog {
+      width: min(620px, calc(100vw - 32px));
+      padding: 0;
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      background: #0b1020;
+      color: var(--text);
+      box-shadow: var(--shadow);
+    }
+
+    dialog::backdrop {
+      background: rgba(0, 0, 0, 0.55);
+      backdrop-filter: blur(5px);
+    }
+
+    .dialog-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 22px 22px 0;
+    }
+
+    .dialog-header h2 {
+      margin: 0;
+      font-size: 26px;
+    }
+
+    .icon-btn {
+      width: 42px;
+      height: 42px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text);
+      border-radius: 14px;
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    .dialog-body {
+      padding: 22px;
+      display: grid;
+      gap: 16px;
+    }
+
+    .field {
+      display: grid;
+      gap: 8px;
+    }
+
+    .field span {
+      font-weight: 700;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .field input,
+    .field textarea,
+    .field select {
+      width: 100%;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text);
+      border-radius: 18px;
+      padding: 14px;
+      outline: none;
+      font: inherit;
+    }
+
+    .field textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .field input:focus,
+    .field textarea:focus,
+    .field select:focus {
+      border-color: rgba(139, 92, 246, 0.55);
+      box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.12);
+    }
+
+    .dialog-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      margin-top: 6px;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 22px;
+      transform: translateX(-50%) translateY(16px);
+      background: white;
+      color: #111827;
+      padding: 13px 16px;
+      border-radius: 16px;
+      font-weight: 800;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+      opacity: 0;
+      pointer-events: none;
+      transition: 0.22s;
+      z-index: 999;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    @media (max-width: 900px) {
+      .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 860px) {
+      .hero {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .toolbar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .tabs {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .tab {
+        text-align: center;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .app {
+        width: min(100% - 24px, 1100px);
+      }
+
+      .hero,
+      .toolbar,
+      .card {
+        border-radius: 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="bg"></div>
+
+  <main class="app">
+    <header class="hero">
+      <div class="hero-copy">
+        <p class="badge">🎓 Выпускной</p>
+        <h1>Выбираем лучший вариант</h1>
+        <p>
+          Предлагай свои идеи и голосуй за варианты, которые нравятся больше всего.
+        </p>
+      </div>
+
+      <button id="openCreate" class="btn btn-primary">
+        + Предложить вариант
+      </button>
+    </header>
+
+    <section class="toolbar">
+      <input
+        id="search"
+        class="search"
+        type="text"
+        placeholder="Поиск варианта..."
+      />
+
+      <div class="tabs">
+        <button class="tab active" data-tab="new">
+          Новые
+        </button>
+
+        <button class="tab" data-tab="top">
+          Топ
+        </button>
+      </div>
+
+      <button id="refresh" class="btn btn-ghost" type="button">
+        Обновить
+      </button>
+    </section>
+
+    <section id="optionsGrid" class="grid"></section>
+
+    <section id="emptyState" class="empty hidden">
+      <h3 id="emptyTitle">Пока нет вариантов</h3>
+      <p id="emptyText">Добавь первый вариант выпускного.</p>
+
+      <button id="emptyCreate" class="btn btn-primary">
+        + Предложить вариант
+      </button>
+    </section>
+  </main>
+
+  <dialog id="dialog">
+    <div class="dialog-header">
+      <h2>Новый вариант</h2>
+
+      <button id="closeDialog" class="icon-btn" type="button">
+        ✕
+      </button>
+    </div>
+
+    <form id="createForm" class="dialog-body">
+      <label class="field">
+        <span>Эмодзи</span>
+
+        <select name="emoji">
+          <option value="🎉">🎉 Праздник</option>
+          <option value="🎓">🎓 Выпускной</option>
+          <option value="🏕️">🏕️ База отдыха</option>
+          <option value="🎤">🎤 Караоке</option>
+          <option value="🎳">🎳 Боулинг</option>
+          <option value="🏙️">🏙️ Город</option>
+          <option value="🍕">🍕 Пицца</option>
+          <option value="🚌">🚌 Поездка</option>
+          <option value="🎬">🎬 Кино</option>
+          <option value="🎮">🎮 Игры</option>
+        </select>
+      </label>
+
+      <label class="field">
+        <span>Название</span>
+
+        <input
+          name="title"
+          type="text"
+          maxlength="80"
+          placeholder="Например: Поездка в Питер"
+          required
+        />
+      </label>
+
+      <label class="field">
+        <span>Описание</span>
+
+        <textarea
+          name="description"
+          maxlength="300"
+          placeholder="Где провести, что делать, примерная стоимость..."
+        ></textarea>
+      </label>
+
+      <div class="dialog-actions">
+        <button id="cancelDialog" class="btn btn-ghost" type="button">
+          Отмена
+        </button>
+
+        <button class="btn btn-primary" type="submit">
+          Добавить
+        </button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    // Сюда вставь ссылку из Apps Script, она должна заканчиваться на /exec
+    const API_URL = "https://script.google.com/macros/s/AKfycbwZjJ5P0XQRGh_qzNUk4DdJMzY3LgJvD5o8JlIj4w0jrdzCPiQnYmOfPfp2-2Bsi3k/exec";
+
+    const VOTED_KEY = "graduation_voted_v1";
+    const VISITOR_KEY = "graduation_visitor_id";
+
+    let options = [];
+    let voted = [];
+    let visitorId = "";
+    let currentTab = "new";
+    let query = "";
+    let isLoading = false;
+    let errorMessage = "";
+
+    const grid = document.getElementById("optionsGrid");
+    const emptyState = document.getElementById("emptyState");
+    const emptyTitle = document.getElementById("emptyTitle");
+    const emptyText = document.getElementById("emptyText");
+    const search = document.getElementById("search");
+    const dialog = document.getElementById("dialog");
+    const createForm = document.getElementById("createForm");
+
+    function init() {
+      voted = loadJson(VOTED_KEY, []);
+      visitorId = getVisitorId();
+
+      if (!API_URL || API_URL.includes("ВСТАВЬ_ССЫЛКУ")) {
+        errorMessage =
+          "Нужно вставить ссылку на Apps Script в константу API_URL.";
+        render();
+        return;
+      }
+
+      loadOptions();
+    }
+
+    function loadJson(key, fallback) {
+      try {
+        const value = JSON.parse(localStorage.getItem(key));
+
+        if (!Array.isArray(value)) {
+          return fallback;
+        }
+
+        return value;
+      } catch {
+        return fallback;
+      }
+    }
+
+    function getVisitorId() {
+      let id = localStorage.getItem(VISITOR_KEY);
+
+      if (!id) {
+        id = makeId();
+        localStorage.setItem(VISITOR_KEY, id);
+      }
+
+      return id;
+    }
+
+    function makeId() {
+      if (window.crypto && crypto.randomUUID) {
+        return crypto.randomUUID();
+      }
+
+      return (
+        Date.now().toString(36) +
+        Math.random().toString(16).slice(2)
+      );
+    }
+
+    function saveVotes() {
+      localStorage.setItem(VOTED_KEY, JSON.stringify(voted));
+    }
+
+    async function apiGetOptions() {
+      const url = `${API_URL}?action=options&t=${Date.now()}`;
+
+      const response = await fetch(url, {
+        method: "GET",
+        cache: "no-store"
+      });
+
+      const data = await parseResponse(response);
+
+      if (!data.ok) {
+        throw new Error(data.error || "API_ERROR");
+      }
+
+      return data.options || [];
+    }
+
+    async function apiCreateOption(payload) {
+      const response = await fetch(API_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "text/plain;charset=utf-8"
+        },
+        body: JSON.stringify({
+          action: "create",
+          title: payload.title,
+          description: payload.description,
+          emoji: payload.emoji
+        })
+      });
+
+      const data = await parseResponse(response);
+
+      if (!data.ok) {
+        throw new Error(data.error || "CREATE_FAILED");
+      }
+
+      return data;
+    }
+
+    async function apiVote(optionId) {
+      const response = await fetch(API_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "text/plain;charset=utf-8"
+        },
+        body: JSON.stringify({
+          action: "vote",
+          optionId: optionId,
+          visitorId: visitorId
+        })
+      });
+
+      const data = await parseResponse(response);
+
+      if (!data.ok) {
+        throw new Error(data.error || "VOTE_FAILED");
+      }
+
+      return data;
+    }
+
+    async function parseResponse(response) {
+      const text = await response.text();
+
+      try {
+        return JSON.parse(text);
+      } catch {
+        throw new Error(
+          "Сервер вернул не JSON. Проверь деплой: нужен Web App и доступ Anyone."
+        );
+      }
+    }
+
+    function errorToText(error) {
+      const messages = {
+        TITLE_INVALID: "Название слишком короткое или длинное.",
+        DESCRIPTION_TOO_LONG: "Описание слишком длинное.",
+        DUPLICATE_TITLE: "Такой вариант уже есть.",
+        NOT_FOUND: "Вариант не найден.",
+        ALREADY_VOTED: "Ты уже голосовал за этот вариант.",
+        BAD_REQUEST: "Некорректный запрос.",
+        BUSY: "Сервер занят. Попробуй ещё раз."
+      };
+
+      const code = error && error.message ? error.message : String(error);
+
+      return messages[code] || code || "Ошибка запроса.";
+    }
+
+    async function loadOptions() {
+      isLoading = true;
+      errorMessage = "";
+      render();
+
+      try {
+        options = await apiGetOptions();
+      } catch (error) {
+        errorMessage = errorToText(error);
+      } finally {
+        isLoading = false;
+        render();
+      }
+    }
+
+    function getVisibleOptions() {
+      let items = [...options];
+
+      if (query) {
+        items = items.filter((item) => {
+          const text = `${item.title} ${item.description || ""}`.toLowerCase();
+          return text.includes(query);
+        });
+      }
+
+      if (currentTab === "top") {
+        items.sort((a, b) => (b.votes || 0) - (a.votes || 0));
+      } else {
+        items.sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        );
+      }
+
+      return items;
+    }
+
+    function render() {
+      grid.innerHTML = "";
+
+      if (isLoading) {
+        grid.appendChild(createStatus("Загрузка..."));
+        emptyState.classList.add("hidden");
+        return;
+      }
+
+      if (errorMessage) {
+        grid.appendChild(createStatus(errorMessage, true));
+        emptyState.classList.add("hidden");
+        return;
+      }
+
+      const items = getVisibleOptions();
+
+      if (!items.length) {
+        emptyState.classList.remove("hidden");
+
+        if (!options.length) {
+          emptyTitle.textContent = "Пока нет вариантов";
+          emptyText.textContent = "Добавь первый вариант выпускного.";
+        } else {
+          emptyTitle.textContent = "Ничего не найдено";
+          emptyText.textContent = "Попробуй другой поисковый запрос.";
+        }
+
+        return;
+      }
+
+      emptyState.classList.add("hidden");
+
+      items.forEach((item) => {
+        grid.appendChild(createCard(item));
+      });
+    }
+
+    function createStatus(text, showRetry = false) {
+      const status = document.createElement("div");
+      status.className = "status";
+      status.textContent = text;
+
+      if (showRetry) {
+        const button = document.createElement("button");
+        button.className = "btn btn-primary";
+        button.textContent = "Повторить";
+
+        button.addEventListener("click", () => {
+          loadOptions();
+        });
+
+        status.appendChild(document.createElement("br"));
+        status.appendChild(button);
+      }
+
+      return status;
+    }
+
+    function createCard(option) {
+      const card = document.createElement("article");
+      card.className = "card";
+
+      const top = document.createElement("div");
+      top.className = "card-top";
+
+      const emoji = document.createElement("div");
+      emoji.className = "emoji";
+      emoji.textContent = option.emoji || "🎉";
+
+      const info = document.createElement("div");
+      info.className = "info";
+
+      const title = document.createElement("h3");
+      title.textContent = option.title;
+
+      const date = document.createElement("div");
+      date.className = "date";
+      date.textContent = formatDate(option.createdAt);
+
+      info.append(title, date);
+      top.append(emoji, info);
+
+      const description = document.createElement("p");
+      description.className = "desc";
+      description.textContent =
+        option.description || "Без описания.";
+
+      const footer = document.createElement("div");
+      footer.className = "card-footer";
+
+      const votes = document.createElement("div");
+      votes.className = "votes";
+      votes.textContent = votesText(option.votes || 0);
+
+      const voteButton = document.createElement("button");
+      voteButton.className = "btn vote-btn";
+
+      const hasVoted = voted.includes(option.id);
+
+      voteButton.textContent = hasVoted
+        ? "Голос учтён"
+        : "Голосовать";
+
+      voteButton.disabled = hasVoted;
+
+      voteButton.addEventListener("click", async (event) => {
+        const button = event.currentTarget;
+
+        if (button.disabled) {
+          return;
+        }
+
+        button.disabled = true;
+        button.textContent = "Голосование...";
+
+        try {
+          await apiVote(option.id);
+
+          voted.push(option.id);
+          saveVotes();
+
+          await loadOptions();
+
+          showToast("Голос учтён");
+        } catch (error) {
+          if (error.message === "ALREADY_VOTED") {
+            voted.push(option.id);
+            saveVotes();
+            render();
+            showToast("Ты уже голосовал за этот вариант");
+          } else {
+            button.disabled = false;
+            button.textContent = "Голосовать";
+            showToast(errorToText(error));
+          }
+        }
+      });
+
+      footer.append(votes, voteButton);
+
+      card.append(top, description, footer);
+
+      return card;
+    }
+
+    function formatDate(iso) {
+      try {
+        return new Intl.DateTimeFormat("ru-RU", {
+          day: "numeric",
+          month: "short",
+          hour: "2-digit",
+          minute: "2-digit"
+        }).format(new Date(iso));
+      } catch {
+        return "";
+      }
+    }
+
+    function votesText(n) {
+      const mod10 = n % 10;
+      const mod100 = n % 100;
+
+      if (mod10 === 1 && mod100 !== 11) {
+        return `${n} голос`;
+      }
+
+      if (
+        [2, 3, 4].includes(mod10) &&
+        ![12, 13, 14].includes(mod100)
+      ) {
+        return `${n} голоса`;
+      }
+
+      return `${n} голосов`;
+    }
+
+    let toastTimer;
+
+    function showToast(message) {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.classList.add("show");
+
+      clearTimeout(toastTimer);
+
+      toastTimer = setTimeout(() => {
+        toast.classList.remove("show");
+      }, 2300);
+    }
+
+    function openDialog() {
+      createForm.reset();
+
+      if (typeof dialog.showModal === "function") {
+        dialog.showModal();
+      } else {
+        alert("Твой браузер не поддерживает модальные окна.");
+      }
+    }
+
+    document
+      .getElementById("openCreate")
+      .addEventListener("click", openDialog);
+
+    document
+      .getElementById("emptyCreate")
+      .addEventListener("click", openDialog);
+
+    document
+      .getElementById("closeDialog")
+      .addEventListener("click", () => {
+        dialog.close();
+      });
+
+    document
+      .getElementById("cancelDialog")
+      .addEventListener("click", () => {
+        dialog.close();
+      });
+
+    dialog.addEventListener("click", (event) => {
+      if (event.target === dialog) {
+        dialog.close();
+      }
+    });
+
+    createForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const formData = new FormData(createForm);
+
+      const title = String(formData.get("title") || "").trim();
+      const description = String(
+        formData.get("description") || ""
+      ).trim();
+      const emoji = String(formData.get("emoji") || "🎉").trim();
+
+      if (title.length < 3) {
+        showToast("Введи нормальное название");
+        return;
+      }
+
+      const submitButton = createForm.querySelector('button[type="submit"]');
+
+      submitButton.disabled = true;
+      submitButton.textContent = "Добавление...";
+
+      try {
+        await apiCreateOption({
+          title,
+          description,
+          emoji
+        });
+
+        dialog.close();
+        createForm.reset();
+
+        showToast("Вариант добавлен");
+
+        await loadOptions();
+      } catch (error) {
+        showToast(errorToText(error));
+      } finally {
+        submitButton.disabled = false;
+        submitButton.textContent = "Добавить";
+      }
+    });
+
+    search.addEventListener("input", (event) => {
+      query = event.target.value.trim().toLowerCase();
+      render();
+    });
+
+    document.querySelectorAll(".tab").forEach((button) => {
+      button.addEventListener("click", () => {
+        currentTab = button.dataset.tab;
+
+        document.querySelectorAll(".tab").forEach((tab) => {
+          tab.classList.toggle("active", tab === button);
+        });
+
+        render();
+      });
+    });
+
+    document
+      .getElementById("refresh")
+      .addEventListener("click", () => {
+        loadOptions();
+      });
+
+    init();
+  </script>
+</body>
+</html>
