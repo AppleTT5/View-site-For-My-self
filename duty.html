@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Дежурства — календарь</title>
+
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --card: #ffffff;
+      --border: #e2e8f0;
+      --text: #0f172a;
+      --muted: #64748b;
+      --accent: #2563eb;
+      --accent-2: #06b6d4;
+      --green: #16a34a;
+      --green-bg: #f0fdf4;
+      --shadow: 0 18px 50px rgba(15, 23, 42, 0.08);
+      --radius: 24px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    button {
+      touch-action: manipulation;
+    }
+
+    .app {
+      width: min(1280px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 30px 0 calc(70px + env(safe-area-inset-bottom));
+    }
+
+    /* ---------- Шапка ---------- */
+
+    .hero {
+      background: linear-gradient(135deg, #eff6ff, #ecfeff);
+      border: 1px solid #dbeafe;
+      border-radius: 30px;
+      padding: 28px 30px;
+      box-shadow: var(--shadow);
+    }
+
+    .badge {
+      display: inline-flex;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(37, 99, 235, 0.08);
+      border: 1px solid rgba(37, 99, 235, 0.14);
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(28px, 4vw, 42px);
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: #475569;
+      font-size: 16px;
+      line-height: 1.6;
+      max-width: 760px;
+    }
+
+    /* ---------- Панель ---------- */
+
+    .panel {
+      margin-top: 22px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px;
+      box-shadow: var(--shadow);
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .panel-header h2 {
+      margin: 0;
+      font-size: 23px;
+      letter-spacing: -0.02em;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .counter {
+      font-size: 14px;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 14px;
+      padding: 12px 15px;
+      cursor: pointer;
+      font: inherit;
+      font-weight: 800;
+      transition: 0.16s;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn:disabled {
+      opacity: 0.65;
+      cursor: default;
+      transform: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: white;
+      box-shadow: 0 10px 24px rgba(37, 99, 235, 0.2);
+    }
+
+    .btn-ghost {
+      background: white;
+      color: #334155;
+      border: 1px solid #cbd5e1;
+    }
+
+    .legend {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .legend span {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 4px;
+      display: inline-block;
+    }
+
+    .dot.free {
+      background: #e2e8f0;
+    }
+
+    .dot.busy {
+      background: var(--green);
+    }
+
+    /* ---------- Десктоп: календарь ---------- */
+
+    .calendar-scroll {
+      overflow-x: auto;
+      padding-bottom: 12px;
+    }
+
+    .calendar {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(140px, 1fr));
+      gap: 12px;
+      min-width: 1020px;
+    }
+
+    .day {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      overflow: hidden;
+    }
+
+    .day.today {
+      border-color: #93c5fd;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08);
+    }
+
+    .day-head {
+      padding: 13px 12px;
+      background: white;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .day-title {
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .day-count {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--muted);
+      background: #f1f5f9;
+      padding: 3px 7px;
+      border-radius: 999px;
+    }
+
+    .day.today .day-title {
+      color: var(--accent);
+    }
+
+    .slots {
+      padding: 10px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .slot {
+      border: 1px dashed #cbd5e1;
+      background: white;
+      border-radius: 12px;
+      padding: 10px;
+      min-height: 60px;
+      cursor: pointer;
+      text-align: left;
+      width: 100%;
+      font: inherit;
+      color: var(--text);
+      transition: 0.15s;
+    }
+
+    .slot:hover {
+      border-color: var(--accent);
+      background: #eff6ff;
+      transform: translateY(-1px);
+    }
+
+    .slot-lesson {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 5px;
+    }
+
+    .slot-name {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.35;
+      word-break: break-word;
+    }
+
+    .slot.free .slot-name {
+      color: #94a3b8;
+      font-weight: 600;
+    }
+
+    .slot.busy {
+      border-style: solid;
+      border-color: #bbf7d0;
+      background: var(--green-bg);
+      cursor: default;
+      transform: none;
+    }
+
+    .slot.busy .slot-lesson {
+      color: #86b99a;
+    }
+
+    .slot.busy .slot-name {
+      color: #166534;
+    }
+
+    /* ---------- Мобилка ---------- */
+
+    .mobile-view {
+      display: none;
+    }
+
+    .day-tabs {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 10px;
+      margin-bottom: 16px;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+
+    .day-tabs::-webkit-scrollbar {
+      display: none;
+    }
+
+    .day-tab {
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid var(--border);
+      background: white;
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-size: 14px;
+      font-weight: 800;
+      color: #475569;
+      cursor: pointer;
+      transition: 0.15s;
+    }
+
+    .day-tab.today {
+      border-color: #93c5fd;
+    }
+
+    .day-tab.active {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: white;
+      border-color: transparent;
+      box-shadow: 0 10px 22px rgba(37, 99, 235, 0.18);
+    }
+
+    .day-tab .count {
+      background: rgba(15, 23, 42, 0.08);
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .day-tab.active .count {
+      background: rgba(255, 255, 255, 0.22);
+    }
+
+    .mobile-day-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 4px 0 14px;
+    }
+
+    .mobile-day-header h3 {
+      margin: 0;
+      font-size: 22px;
+      letter-spacing: -0.02em;
+    }
+
+    .mobile-count {
+      font-size: 13px;
+      font-weight: 800;
+      color: #64748b;
+      background: #f1f5f9;
+      padding: 6px 9px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    .mobile-slots {
+      display: grid;
+      gap: 10px;
+    }
+
+    .m-slot {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 14px;
+      border-radius: 18px;
+      border: 1px dashed #cbd5e1;
+      background: white;
+      cursor: pointer;
+      text-align: left;
+      font: inherit;
+      color: var(--text);
+      min-height: 72px;
+      transition: 0.15s;
+    }
+
+    .m-slot.free:active {
+      transform: scale(0.99);
+      background: #eff6ff;
+      border-color: var(--accent);
+    }
+
+    .m-slot.busy {
+      border-style: solid;
+      border-color: #bbf7d0;
+      background: var(--green-bg);
+      cursor: default;
+    }
+
+    .m-left {
+      display: grid;
+      gap: 4px;
+      min-width: 0;
+    }
+
+    .m-lesson {
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #94a3b8;
+    }
+
+    .m-name {
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 1.35;
+      word-break: break-word;
+    }
+
+    .m-slot.free .m-name {
+      color: #94a3b8;
+      font-weight: 600;
+    }
+
+    .m-slot.busy .m-name {
+      color: #166534;
+    }
+
+    .m-right {
+      flex: 0 0 auto;
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--accent);
+      background: #eff6ff;
+      padding: 8px 10px;
+      border-radius: 12px;
+      white-space: nowrap;
+    }
+
+    .m-slot.busy .m-right {
+      color: #166534;
+      background: #dcfce7;
+    }
+
+    /* ---------- Статусы ---------- */
+
+    .status {
+      padding: 24px;
+      border: 1px dashed #cbd5e1;
+      border-radius: 18px;
+      background: #f8fafc;
+      color: #475569;
+      text-align: center;
+    }
+
+    .status.error {
+      border-color: #fecaca;
+      background: #fff1f2;
+      color: #b91c1c;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* ---------- Модалка ---------- */
+
+    dialog {
+      width: min(440px, calc(100vw - 32px));
+      padding: 0;
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      background: white;
+      color: var(--text);
+      box-shadow: 0 30px 80px rgba(15, 23, 42, 0.25);
+    }
+
+    dialog::backdrop {
+      background: rgba(15, 23, 42, 0.4);
+      backdrop-filter: blur(4px);
+    }
+
+    .dialog-head {
+      padding: 22px 22px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .dialog-head h2 {
+      margin: 0;
+      font-size: 24px;
+      letter-spacing: -0.02em;
+    }
+
+    .icon-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: #f8fafc;
+      color: var(--text);
+      cursor: pointer;
+      font-size: 17px;
+    }
+
+    .dialog-body {
+      padding: 20px 22px 24px;
+      display: grid;
+      gap: 16px;
+    }
+
+    .slot-info {
+      background: #eff6ff;
+      border: 1px solid #dbeafe;
+      color: #1e40af;
+      border-radius: 14px;
+      padding: 13px 15px;
+      font-weight: 800;
+      font-size: 15px;
+    }
+
+    .field {
+      display: grid;
+      gap: 8px;
+    }
+
+    .field span {
+      font-size: 14px;
+      font-weight: 700;
+      color: #475569;
+    }
+
+    .field input {
+      width: 100%;
+      border: 1px solid #cbd5e1;
+      border-radius: 14px;
+      padding: 13px 14px;
+      font: inherit;
+      color: var(--text);
+      outline: none;
+    }
+
+    .field input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+    }
+
+    .dialog-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    /* ---------- Уведомление ---------- */
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: calc(22px + env(safe-area-inset-bottom));
+      transform: translateX(-50%) translateY(16px);
+      background: #0f172a;
+      color: white;
+      padding: 13px 17px;
+      border-radius: 14px;
+      font-weight: 700;
+      font-size: 14px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.22);
+      opacity: 0;
+      pointer-events: none;
+      transition: 0.22s;
+      z-index: 999;
+      max-width: calc(100vw - 32px);
+      text-align: center;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* ---------- Адаптивность ---------- */
+
+    @media (max-width: 860px) {
+      .app {
+        width: calc(100% - 20px);
+        padding-top: 18px;
+      }
+
+      .hero {
+        padding: 22px;
+        border-radius: 24px;
+      }
+
+      .panel {
+        padding: 18px;
+        border-radius: 22px;
+      }
+
+      .panel-header {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .legend {
+        display: none;
+      }
+
+      .calendar-scroll {
+        display: none !important;
+      }
+
+      .mobile-view {
+        display: block;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="app">
+    <header class="hero">
+      <p class="badge">🧹 Классный уголок</p>
+      <h1>Календарь дежурств</h1>
+      <p class="subtitle">
+        Нажми на свободный урок, чтобы записаться на дежурство.
+        Занятые слоты подсвечены зелёным и показывают дежурного.
+      </p>
+    </header>
+
+    <section class="panel">
+      <div class="panel-header">
+        <h2>Расписание на неделю</h2>
+
+        <div class="actions">
+          <span id="counter" class="counter"></span>
+          <button id="refresh" class="btn btn-ghost" type="button">
+            Обновить
+          </button>
+        </div>
+      </div>
+
+      <div class="legend">
+        <span><i class="dot free"></i> Свободно — нажми, чтобы записаться</span>
+        <span><i class="dot busy"></i> Уже есть дежурный</span>
+      </div>
+
+      <div id="status" class="status hidden"></div>
+
+      <!-- Десктоп -->
+      <div id="calendarWrap" class="calendar-scroll">
+        <div id="calendar" class="calendar"></div>
+      </div>
+
+      <!-- Смартфон -->
+      <div id="mobileView" class="mobile-view hidden">
+        <div id="dayTabs" class="day-tabs"></div>
+
+        <div class="mobile-day-header">
+          <h3 id="mobileDayTitle"></h3>
+          <span id="mobileDayCount" class="mobile-count"></span>
+        </div>
+
+        <div id="mobileSlots" class="mobile-slots"></div>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="dialog">
+    <div class="dialog-head">
+      <h2>Записаться</h2>
+      <button id="closeDialog" class="icon-btn" type="button">✕</button>
+    </div>
+
+    <form id="dutyForm" class="dialog-body">
+      <div id="slotInfo" class="slot-info"></div>
+
+      <label class="field">
+        <span>Имя и фамилия</span>
+        <input
+          id="nameInput"
+          name="name"
+          type="text"
+          maxlength="60"
+          placeholder="Иван Иванов"
+          required
+          autocomplete="name"
+        />
+      </label>
+
+      <div class="dialog-actions">
+        <button id="cancelDialog" class="btn btn-ghost" type="button">
+          Отмена
+        </button>
+
+        <button id="submitBtn" class="btn btn-primary" type="submit">
+          Записаться
+        </button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    // Вставь свою ссылку из Apps Script, она заканчивается на /exec
+    const API_URL = "https://script.google.com/macros/s/AKfycbwY8icSt7HWhMWd4l4FiK5ZK5Y6QvnKTHkW3g-DzJNRDM5KooWhPOyGJ8kxRHGKRt9xQw/exec";
+
+    const DAYS = [
+      "Понедельник",
+      "Вторник",
+      "Среда",
+      "Четверг",
+      "Пятница",
+      "Суббота",
+      "Воскресенье"
+    ];
+
+    const DAYS_SHORT = [
+      "Пн",
+      "Вт",
+      "Ср",
+      "Чт",
+      "Пт",
+      "Сб",
+      "Вс"
+    ];
+
+    const LESSONS = [1, 2, 3, 4, 5, 6, 7, 8];
+
+    let duties = [];
+    let isLoading = false;
+    let errorMessage = "";
+    let selectedSlot = null;
+    let selectedDay = todayName();
+
+    const calendar = document.getElementById("calendar");
+    const calendarWrap = document.getElementById("calendarWrap");
+    const mobileView = document.getElementById("mobileView");
+    const dayTabs = document.getElementById("dayTabs");
+    const mobileDayTitle = document.getElementById("mobileDayTitle");
+    const mobileDayCount = document.getElementById("mobileDayCount");
+    const mobileSlots = document.getElementById("mobileSlots");
+    const statusBox = document.getElementById("status");
+    const counter = document.getElementById("counter");
+    const dialog = document.getElementById("dialog");
+    const dutyForm = document.getElementById("dutyForm");
+    const nameInput = document.getElementById("nameInput");
+    const slotInfo = document.getElementById("slotInfo");
+    const submitBtn = document.getElementById("submitBtn");
+
+    /* ---------- Загрузка ---------- */
+
+    async function loadDuties() {
+      isLoading = true;
+      errorMessage = "";
+      render();
+
+      try {
+        const url = `${API_URL}?action=duties&t=${Date.now()}`;
+
+        const response = await fetch(url, {
+          method: "GET",
+          cache: "no-store"
+        });
+
+        const data = await parseResponse(response);
+
+        if (!data.ok) {
+          throw new Error(data.error || "API_ERROR");
+        }
+
+        duties = data.duties || [];
+      } catch (error) {
+        errorMessage = errorToText(error);
+      } finally {
+        isLoading = false;
+        render();
+      }
+    }
+
+    /* ---------- Запись ---------- */
+
+    async function createDuty(payload) {
+      const response = await fetch(API_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "text/plain;charset=utf-8"
+        },
+        body: JSON.stringify({
+          action: "create",
+          ...payload
+        })
+      });
+
+      const data = await parseResponse(response);
+
+      if (!data.ok) {
+        throw new Error(data.error || "CREATE_FAILED");
+      }
+
+      return data;
+    }
+
+    async function parseResponse(response) {
+      const text = await response.text();
+
+      try {
+        return JSON.parse(text);
+      } catch {
+        throw new Error("SERVER_NOT_JSON");
+      }
+    }
+
+    function errorToText(error) {
+      const messages = {
+        NAME_INVALID: "Имя должно быть от 2 до 60 символов.",
+        DAY_INVALID: "Выбери день.",
+        LESSON_INVALID: "Выбери урок.",
+        SLOT_TAKEN: "На этот урок уже записан дежурный.",
+        BUSY: "Сервер занят. Попробуй ещё раз.",
+        SERVER_NOT_JSON:
+          "Ссылка неверна. Нужен Web app: Выполнять как — Я, Доступ — Все, ссылка на /exec."
+      };
+
+      const code = error && error.message ? error.message : String(error);
+
+      return messages[code] || code || "Ошибка запроса.";
+    }
+
+    /* ---------- Данные ---------- */
+
+    function getDutyMap() {
+      const map = {};
+
+      duties.forEach((duty) => {
+        const key = `${duty.day}__${duty.lesson}`;
+        map[key] = duty;
+      });
+
+      return map;
+    }
+
+    function todayName() {
+      const day = new Date().getDay();
+
+      // Воскресенье = 0, переводим в понедельник = 0
+      return DAYS[day === 0 ? 6 : day - 1];
+    }
+
+    function isMobile() {
+      return window.matchMedia("(max-width: 860px)").matches;
+    }
+
+    /* ---------- Рендер ---------- */
+
+    function render() {
+      statusBox.innerHTML = "";
+      statusBox.className = "status hidden";
+
+      counter.textContent = isLoading
+        ? "Загрузка..."
+        : `Всего записей: ${duties.length}`;
+
+      if (isLoading || errorMessage) {
+        calendarWrap.classList.add("hidden");
+        mobileView.classList.add("hidden");
+
+        statusBox.classList.remove("hidden");
+        statusBox.classList.toggle("error", !!errorMessage);
+        statusBox.textContent = isLoading
+          ? "Загружаем расписание..."
+          : errorMessage;
+
+        if (errorMessage) {
+          const retry = document.createElement("button");
+          retry.className = "btn btn-primary";
+          retry.style.marginTop = "12px";
+          retry.textContent = "Повторить";
+          retry.addEventListener("click", loadDuties);
+
+          statusBox.appendChild(document.createElement("br"));
+          statusBox.appendChild(retry);
+        }
+
+        return;
+      }
+
+      if (isMobile()) {
+        calendarWrap.classList.add("hidden");
+        mobileView.classList.remove("hidden");
+        renderMobile();
+      } else {
+        mobileView.classList.add("hidden");
+        calendarWrap.classList.remove("hidden");
+        renderDesktop();
+      }
+    }
+
+    function renderDesktop() {
+      calendar.innerHTML = "";
+
+      const map = getDutyMap();
+      const today = todayName();
+
+      DAYS.forEach((day) => {
+        const column = document.createElement("section");
+        column.className = "day";
+
+        if (day === today) {
+          column.classList.add("today");
+        }
+
+        const dayDuties = duties.filter((duty) => duty.day === day);
+
+        const head = document.createElement("div");
+        head.className = "day-head";
+
+        const title = document.createElement("span");
+        title.className = "day-title";
+        title.textContent = day;
+
+        const count = document.createElement("span");
+        count.className = "day-count";
+        count.textContent = `${dayDuties.length}/${LESSONS.length}`;
+
+        head.append(title, count);
+
+        const slots = document.createElement("div");
+        slots.className = "slots";
+
+        LESSONS.forEach((lesson) => {
+          const duty = map[`${day}__${lesson}`];
+
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = `slot ${duty ? "busy" : "free"}`;
+
+          const lessonLabel = document.createElement("span");
+          lessonLabel.className = "slot-lesson";
+          lessonLabel.textContent = `Урок ${lesson}`;
+
+          const nameLabel = document.createElement("span");
+          nameLabel.className = "slot-name";
+          nameLabel.textContent = duty ? duty.name : "Свободно";
+
+          button.append(lessonLabel, nameLabel);
+
+          if (duty) {
+            button.title = `Дежурит: ${duty.name}`;
+          } else {
+            button.title = `Записаться: ${day}, ${lesson} урок`;
+            button.addEventListener("click", () => {
+              openSlot(day, lesson);
+            });
+          }
+
+          slots.appendChild(button);
+        });
+
+        column.append(head, slots);
+        calendar.appendChild(column);
+      });
+    }
+
+    function renderMobile() {
+      dayTabs.innerHTML = "";
+
+      const map = getDutyMap();
+      const today = todayName();
+
+      DAYS.forEach((day, index) => {
+        const count = duties.filter((duty) => duty.day === day).length;
+
+        const tab = document.createElement("button");
+        tab.type = "button";
+        tab.className = "day-tab";
+        tab.title = day;
+
+        if (day === today) {
+          tab.classList.add("today");
+        }
+
+        if (day === selectedDay) {
+          tab.classList.add("active");
+        }
+
+        const label = document.createElement("span");
+        label.textContent = DAYS_SHORT[index];
+
+        const countBadge = document.createElement("span");
+        countBadge.className = "count";
+        countBadge.textContent = count;
+
+        tab.append(label, countBadge);
+
+        tab.addEventListener("click", () => {
+          selectedDay = day;
+          render();
+        });
+
+        dayTabs.appendChild(tab);
+      });
+
+      const dayDuties = duties.filter((duty) => duty.day === selectedDay);
+
+      mobileDayTitle.textContent =
+        selectedDay === today
+          ? `${selectedDay} · сегодня`
+          : selectedDay;
+
+      mobileDayCount.textContent = `${dayDuties.length}/${LESSONS.length}`;
+
+      mobileSlots.innerHTML = "";
+
+      LESSONS.forEach((lesson) => {
+        const duty = map[`${selectedDay}__${lesson}`];
+
+        const slot = document.createElement("button");
+        slot.type = "button";
+        slot.className = `m-slot ${duty ? "busy" : "free"}`;
+
+        const left = document.createElement("div");
+        left.className = "m-left";
+
+        const lessonLabel = document.createElement("span");
+        lessonLabel.className = "m-lesson";
+        lessonLabel.textContent = `Урок ${lesson}`;
+
+        const nameLabel = document.createElement("span");
+        nameLabel.className = "m-name";
+        nameLabel.textContent = duty ? duty.name : "Свободно";
+
+        left.append(lessonLabel, nameLabel);
+
+        const right = document.createElement("span");
+        right.className = "m-right";
+        right.textContent = duty ? "Занято" : "Записаться";
+
+        slot.append(left, right);
+
+        if (duty) {
+          slot.disabled = true;
+          slot.title = `Дежурит: ${duty.name}`;
+        } else {
+          slot.title = `Записаться: ${selectedDay}, ${lesson} урок`;
+          slot.addEventListener("click", () => {
+            openSlot(selectedDay, lesson);
+          });
+        }
+
+        mobileSlots.appendChild(slot);
+      });
+    }
+
+    /* ---------- Модалка ---------- */
+
+    function openSlot(day, lesson) {
+      selectedSlot = { day, lesson };
+
+      nameInput.value = "";
+      slotInfo.textContent = `${day} · ${lesson} урок`;
+
+      dialog.showModal();
+      nameInput.focus();
+    }
+
+    document
+      .getElementById("closeDialog")
+      .addEventListener("click", () => dialog.close());
+
+    document
+      .getElementById("cancelDialog")
+      .addEventListener("click", () => dialog.close());
+
+    dialog.addEventListener("click", (event) => {
+      if (event.target === dialog) {
+        dialog.close();
+      }
+    });
+
+    dutyForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      if (!selectedSlot) {
+        return;
+      }
+
+      const name = nameInput.value.trim();
+
+      if (name.length < 2) {
+        showToast("Введи имя и фамилию");
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Запись...";
+
+      try {
+        await createDuty({
+          name,
+          day: selectedSlot.day,
+          lesson: selectedSlot.lesson
+        });
+
+        dialog.close();
+        showToast("Готово, ты записан");
+
+        await loadDuties();
+      } catch (error) {
+        const text = errorToText(error);
+        showToast(text);
+
+        // Если слот заняли, обновляем календарь
+        if (error.message === "SLOT_TAKEN") {
+          await loadDuties();
+        }
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Записаться";
+      }
+    });
+
+    /* ---------- Утилиты ---------- */
+
+    let toastTimer;
+
+    function showToast(message) {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.classList.add("show");
+
+      clearTimeout(toastTimer);
+
+      toastTimer = setTimeout(() => {
+        toast.classList.remove("show");
+      }, 2600);
+    }
+
+    document
+      .getElementById("refresh")
+      .addEventListener("click", loadDuties);
+
+    let resizeTimer;
+
+    window.addEventListener("resize", () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(render, 150);
+    });
+
+    /* ---------- Старт ---------- */
+
+    if (!API_URL || API_URL.includes("ВСТАВЬ_ССЫЛКУ")) {
+      errorMessage = "Сначала вставь свою ссылку Apps Script в API_URL.";
+      render();
+    } else {
+      loadDuties();
+    }
+  </script>
+</body>
+</html>
